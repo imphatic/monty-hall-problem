@@ -1,0 +1,43 @@
+body {
+    font: 14px/20px "Helvetica", "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+    text-align:center;
+    color:#ffffff;
+    background:#000000;
+}
+
+.grey {
+    color:#787878;
+}
+
+.doors {
+    margin:50px 20% 0 20%;
+    display: flex;
+    justify-content:center
+}
+
+.doorWrap {
+    flex-grow:1;
+    text-align:center;
+}
+
+.doorShape {
+    background:#787878;
+    width:50%;
+    margin:0 auto;
+    color:#000000;
+    font-size:100px;
+    min-height:150px;
+}
+    .arrow {
+        display:inline-block;
+        width: 0;
+        height: 0;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 24px solid #00fff0;
+    }
+    .doorShape span {
+        display:block;
+        padding-top:60px;
+    }
