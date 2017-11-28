@@ -6,6 +6,18 @@ body {
     background:#000000;
 }
 
+h2 {
+    color:#787878;
+    font-weight:normal;
+    font-size:18px;
+}
+
+hr {
+    background:#787878;
+    border:none;
+    height:1px;
+}
+
 .grey {
     color:#787878;
 }
@@ -29,6 +41,9 @@ body {
     font-size:100px;
     min-height:150px;
 }
+    .arrowWrap {
+        height:44px;
+    }
     .arrow {
         display:inline-block;
         width: 0;
@@ -41,3 +56,15 @@ body {
         display:block;
         padding-top:60px;
     }
+
+    .car {
+        color:#00ff06;
+    }
+
+    .goat {
+        color:#ef0000;
+    }
+
+.controls {
+    padding-top:50px;
+}

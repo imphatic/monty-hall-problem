@@ -5,11 +5,13 @@ import './index.css';
 function Door(props) {
     return (
         <div className="doorWrap">
-            <div className="arrow" />
+            <div className="arrowWrap">
+                { props.selected ? <div className="arrow" /> : null }
+            </div>
             <div className="doorShape">
                 <span>{props.value}</span>
             </div>
-            <div className="prize">
+            <div className={'prize ' + props.prize}>
                 {props.prize}
             </div>
         </div>
@@ -18,11 +20,12 @@ function Door(props) {
 
 
 class Doors extends React.Component {
-    renderDoor(i) {
+    renderDoor(i, prize, selected) {
         return (
             <Door
                 value={i+1}
-                prize='car'
+                prize={prize}
+                selected={selected}
             />
         );
     }
@@ -30,10 +33,29 @@ class Doors extends React.Component {
     render() {
         return (
             <div className="doors">
-                {this.renderDoor(0)}
-                {this.renderDoor(1)}
-                {this.renderDoor(2)}
+                {this.renderDoor(0, 'car', false)}
+                {this.renderDoor(1, 'goat', true)}
+                {this.renderDoor(2, 'goat', false)}
             </div>
+        );
+    }
+}
+
+class Controls extends React.Component {
+    render() {
+        return (
+            <div className="controls">
+                <hr />
+                <h2>Controls</h2>
+            </div>
+        );
+    }
+}
+
+class Results extends React.Component {
+    render() {
+        return (
+            <div />
         );
     }
 }
@@ -64,6 +86,9 @@ class MontyHallProblem extends React.Component {
 
                 <Doors />
 
+                <Controls />
+
+                <Results />
 
             </div>
 
