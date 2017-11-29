@@ -47,6 +47,24 @@ class Controls extends React.Component {
             <div className="controls">
                 <hr />
                 <h2>Controls</h2>
+                <div className="controlsWrap">
+                    <div className="controlWrap">
+                        <div />
+                        <div><input type="checkbox" name="switch" checked="checked" /> Switch Doors</div>
+                    </div>
+                    <div className="controlWrap">
+                        <div>Runs</div>
+                        <div><input type="input" name="runs" value="100" /></div>
+                    </div>
+                    <div className="controlWrap">
+                        <div>Speed</div>
+                        <div><input type="input" name="speed" value="50" /> %</div>
+                    </div>
+                    <div className="controlWrap">
+                        <div />
+                        <div><input type="button" name="run" value="Run!" /></div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -55,7 +73,25 @@ class Controls extends React.Component {
 class Results extends React.Component {
     render() {
         return (
-            <div />
+            <div className="results">
+                <hr />
+                <div className="titleWins">Wins</div>
+                <div className="titleLoses">Loses</div>
+                <h2>Results</h2>
+
+                <div className="resultsWrap">
+                    <div className="leftAverageLine">
+                        win average with switch:
+                        <span className="green">55%</span>
+                    </div>
+
+                    <div className="rightAverageLine">
+                        win average without switch:
+                        <span className="red">45%</span>
+                    </div>
+                </div>
+
+            </div>
         );
     }
 }
@@ -79,8 +115,8 @@ class MontyHallProblem extends React.Component {
                     <span className="grey">From the "Ask Marilyn" column in Parade magazine in 1990</span>
                     </p>
                     <p>
-                        The answer, perhaps suprisingly, is yes, your chance of winning is increased when you switch your
-                        choice.  Below you can simulate either switching doors or always sticking with the original choice.
+                        The answer, perhaps suprisingly, is yes, your chance of winning is increased when you switch from your
+                        original choice.  Below you can simulate either switching doors or always sticking with the original choice.
                     </p>
                 </div>
 

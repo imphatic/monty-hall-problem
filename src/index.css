@@ -10,6 +10,7 @@ h2 {
     color:#787878;
     font-weight:normal;
     font-size:18px;
+    margin:0;
 }
 
 hr {
@@ -17,22 +18,26 @@ hr {
     border:none;
     height:1px;
 }
-
 .grey {
     color:#787878;
 }
+.green {
+    color:#00ff06;
+}
+.red {
+    color:#ef0000;
+}
+
 
 .doors {
     margin:50px 20% 0 20%;
     display: flex;
     justify-content:center
 }
-
 .doorWrap {
     flex-grow:1;
     text-align:center;
 }
-
 .doorShape {
     background:#787878;
     width:50%;
@@ -41,30 +46,71 @@ hr {
     font-size:100px;
     min-height:150px;
 }
-    .arrowWrap {
-        height:44px;
-    }
-    .arrow {
-        display:inline-block;
-        width: 0;
-        height: 0;
-        border-left: 12px solid transparent;
-        border-right: 12px solid transparent;
-        border-top: 24px solid #00fff0;
-    }
-    .doorShape span {
-        display:block;
-        padding-top:60px;
-    }
+.arrowWrap {
+    height:44px;
+}
+.arrow {
+    display:inline-block;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 24px solid #00fff0;
+}
+.doorShape span {
+    display:block;
+    padding-top:60px;
+}
+.car {
+    color:#00ff06;
+}
+.goat {
+    color:#ef0000;
+}
 
-    .car {
-        color:#00ff06;
-    }
-
-    .goat {
-        color:#ef0000;
-    }
 
 .controls {
     padding-top:50px;
+}
+.controlsWrap {
+    display: flex;
+    width:50%;
+    margin:10px auto 0 auto;
+}
+.controlWrap {
+    flex-grow:1;
+    display:inline-block;
+    justify-content:center
+}
+.controlWrap div:first-child {
+    height:20px;
+}
+
+.controlWrap input[type='input'] {
+    text-align:center;
+    width:50px;
+}
+
+
+.results {
+    padding-top:50px;
+}
+.titleWins {
+    float:left;
+    color:#00ff06;
+    font-size: 18px;
+}
+.titleLoses {
+    float:right;
+    color:#ef0000;
+    font-size: 18px;
+}
+.resultsWrap {
+    position:relative;
+}
+.leftAverageLine {
+    position:absolute;
+}
+.rightAverageLine {
+    position:absolute;
 }
