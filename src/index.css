@@ -146,10 +146,19 @@ ul {
 .round > div > div {
     background:#4b4b4b;
     line-height:110%;
-    overflow:hidden;
     border:solid #000000;
+    position:relative;
 }
-
+.wins {
+    position:relative;
+    float:left;
+    left:-30px;
+}
+.loses {
+    position:relative;
+    float:right;
+    right:-30px;
+}
 span.switch {
     color:#ff9c00;
 }

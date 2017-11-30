@@ -66,8 +66,54 @@ class Controls extends React.Component {
     }
 }
 
-class Results extends React.Component {
+class Round extends React.Component {
     render() {
+        const switchWin = this.props.switchWinPercent;
+        const noSwitchWin = this.props.noSwitchWinPercent;
+        const switchPadRight = (switchWin)/2;
+        const switchPadLeft = (100 - switchWin)/2;
+        const noSwitchPadRight = (noSwitchWin)/2;
+        const noSwitchPadLeft = (100 - noSwitchWin)/2;
+
+        return (
+            <li className="round">
+                <div className="switch" style={{paddingLeft:switchPadLeft+'%', paddingRight:switchPadRight+'%'}}>
+                    <div className="winner">
+                        <div className="wins">{switchWin}%</div>
+                        switch
+                        <div className="loses">{100 - switchWin}%</div>
+                    </div>
+                </div>
+                <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
+                    <div>
+                        <div className="wins">{noSwitchWin}%</div>
+                        no switch
+                        <div className="loses">{100 - noSwitchWin}%</div>
+                    </div>
+                </div>
+            </li>
+        );
+    }
+}
+
+class Results extends React.Component {
+    renderRound(i) {
+        const round = this.props.rounds[i];
+        const winner = this.props.winners[i];
+
+        return (
+            <Round
+                key={i}
+                switchWinPercent={round[0]}
+                noSwitchWinPercent={round[1]}
+                winner={winner}
+            />
+        );
+    }
+
+    render() {
+        const rounds = null;
+
         return (
             <div className="results">
                 <hr />
@@ -85,15 +131,8 @@ class Results extends React.Component {
                     </div>
 
                     <ul className="rounds">
-                        <li className="round">
-                            <div className="switch" style={{paddingRight:'25%', paddingLeft:'12%'}}><div className="winner">switch</div></div>
-                            <div className="noSwitch"><div>no switch</div></div>
-                        </li>
-
-                        <li className="round">
-                            <div className="switch" style={{paddingRight:'25%', paddingLeft:'12%'}}><div className="winner">switch</div></div>
-                            <div className="noSwitch"><div>no switch</div></div>
-                        </li>
+                        {rounds}
+                        {this.renderRound(0)}
                     </ul>
 
                 </div>
@@ -105,7 +144,15 @@ class Results extends React.Component {
 class MontyHallProblem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            currentRound: 0,
+            rounds : [
+                [45,35]
+            ],
+            winners : [
+                [0]
+            ]
+        };
     }
 
     render() {
@@ -130,7 +177,10 @@ class MontyHallProblem extends React.Component {
 
                 <Controls />
 
-                <Results />
+                <Results
+                    rounds={this.state.rounds}
+                    winners={this.state.winners}
+                />
 
             </div>
 
