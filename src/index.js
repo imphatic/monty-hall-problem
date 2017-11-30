@@ -49,10 +49,6 @@ class Controls extends React.Component {
                 <h2>Controls</h2>
                 <div className="controlsWrap">
                     <div className="controlWrap">
-                        <div />
-                        <div><input type="checkbox" name="switch" checked="checked" /> Switch Doors</div>
-                    </div>
-                    <div className="controlWrap">
                         <div>Runs</div>
                         <div><input type="input" name="runs" value="100" /></div>
                     </div>
@@ -81,16 +77,26 @@ class Results extends React.Component {
 
                 <div className="resultsWrap">
                     <div className="leftAverageLine">
-                        win average with switch:
-                        <span className="green">55%</span>
+                        win average with switch: <span className="switch">55%</span>
                     </div>
 
                     <div className="rightAverageLine">
-                        win average without switch:
-                        <span className="red">45%</span>
+                        win average without switch: <span className="noSwitch">45%</span>
                     </div>
-                </div>
 
+                    <ul className="rounds">
+                        <li className="round">
+                            <div className="switch" style={{paddingRight:'25%', paddingLeft:'12%'}}><div className="winner">switch</div></div>
+                            <div className="noSwitch"><div>no switch</div></div>
+                        </li>
+
+                        <li className="round">
+                            <div className="switch" style={{paddingRight:'25%', paddingLeft:'12%'}}><div className="winner">switch</div></div>
+                            <div className="noSwitch"><div>no switch</div></div>
+                        </li>
+                    </ul>
+
+                </div>
             </div>
         );
     }

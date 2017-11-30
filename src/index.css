@@ -18,6 +18,11 @@ hr {
     border:none;
     height:1px;
 }
+
+ul {
+    list-style:none;
+    padding:0;
+}
 .grey {
     color:#787878;
 }
@@ -74,7 +79,8 @@ hr {
 }
 .controlsWrap {
     display: flex;
-    width:50%;
+    width:30%;
+    min-width:200px;
     margin:10px auto 0 auto;
 }
 .controlWrap {
@@ -109,8 +115,50 @@ hr {
     position:relative;
 }
 .leftAverageLine {
+    height:100%;
     position:absolute;
+    right:55%;
+    width:20%;
+    padding-right:5px;
+    border-right:1px solid #4b4b4b;
+    text-align:right;
 }
 .rightAverageLine {
+    height:100%;
     position:absolute;
+    left:55%;
+    width:20%;
+    padding-left:5px;
+    border-left:1px solid #4b4b4b;
+}
+
+.rounds {
+    min-width:400px;
+    width:50%;
+    margin:0 auto;
+    padding-top:40px;
+    font-size:10px;
+    position:relative;
+}
+.round {
+    margin-bottom:20px;
+}
+.round > div > div {
+    background:#4b4b4b;
+    line-height:110%;
+    overflow:hidden;
+    border:solid #000000;
+}
+
+span.switch {
+    color:#ff9c00;
+}
+div.switch > div.winner {
+    background:#ff9c00;
+}
+span.noSwitch {
+    color:#0693ff;
+}
+div.noSwitch > div.winner {
+    background:#0693ff;
 }
