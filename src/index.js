@@ -68,8 +68,9 @@ class Controls extends React.Component {
 
 class Round extends React.Component {
     render() {
-        const switchWin = this.props.switchWinPercent;
-        const noSwitchWin = this.props.noSwitchWinPercent;
+        const data = this.props.data;
+        const switchWin = data.switchWinPercent;
+        const noSwitchWin = data.noSwitchWinPercent;
         const switchPadRight = (switchWin)/2;
         const switchPadLeft = (100 - switchWin)/2;
         const noSwitchPadRight = (noSwitchWin)/2;
@@ -78,14 +79,14 @@ class Round extends React.Component {
         return (
             <li className="round">
                 <div className="switch" style={{paddingLeft:switchPadLeft+'%', paddingRight:switchPadRight+'%'}}>
-                    <div className="winner">
+                    <div className={ data.winner === 1 ? 'winner' : null }>
                         <div className="wins">{switchWin}%</div>
                         switch
                         <div className="loses">{100 - switchWin}%</div>
                     </div>
                 </div>
                 <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
-                    <div>
+                    <div className={ data.winner === 2 ? 'winner' : null }>
                         <div className="wins">{noSwitchWin}%</div>
                         no switch
                         <div className="loses">{100 - noSwitchWin}%</div>
@@ -97,22 +98,15 @@ class Round extends React.Component {
 }
 
 class Results extends React.Component {
-    renderRound(i) {
-        const round = this.props.rounds[i];
-        const winner = this.props.winners[i];
-
-        return (
-            <Round
-                key={i}
-                switchWinPercent={round[0]}
-                noSwitchWinPercent={round[1]}
-                winner={winner}
-            />
-        );
-    }
-
     render() {
-        const rounds = null;
+        const rounds = this.props.rounds.map((data, index) => {
+            return (
+                <Round
+                    key={index}
+                    data={data}
+                />
+            );
+        });
 
         return (
             <div className="results">
@@ -132,7 +126,6 @@ class Results extends React.Component {
 
                     <ul className="rounds">
                         {rounds}
-                        {this.renderRound(0)}
                     </ul>
 
                 </div>
@@ -145,12 +138,20 @@ class MontyHallProblem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentRound: 0,
+            currentRun: 0,
             rounds : [
-                [45,35]
-            ],
-            winners : [
-                [0]
+                {
+                    'runLength': 100,
+                    'switchWinPercent': 45,
+                    'noSwitchWinPercent':35,
+                    'winner': 0
+                },
+                {
+                    'runLength': 100,
+                    'switchWinPercent': 35,
+                    'noSwitchWinPercent':45,
+                    'winner': 0
+                }
             ]
         };
     }
