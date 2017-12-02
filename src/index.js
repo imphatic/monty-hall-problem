@@ -6,13 +6,13 @@ function Door(props) {
     return (
         <div className="doorWrap">
             <div className="arrowWrap">
-                { props.selected ? <div className="arrow" /> : null }
+                { props.data.arrow ? <div className="arrow" /> : null }
             </div>
             <div className="doorShape">
-                <span>{props.value}</span>
+                <span>{props.index + 1}</span>
             </div>
-            <div className={'prize ' + props.prize}>
-                {props.prize}
+            <div className={(props.data.car) ? 'car' : 'goat'}>
+                {(props.data.car) ? 'car' : 'goat'}
             </div>
         </div>
     );
@@ -20,22 +20,20 @@ function Door(props) {
 
 
 class Doors extends React.Component {
-    renderDoor(i, prize, selected) {
-        return (
-            <Door
-                value={i+1}
-                prize={prize}
-                selected={selected}
-            />
-        );
-    }
-
     render() {
+        const doors = this.props.doors.map((data, index) => {
+            return (
+                <Door
+                    key={index}
+                    index={index}
+                    data={data}
+                />
+            );
+        });
+
         return (
             <div className="doors">
-                {this.renderDoor(0, 'car', false)}
-                {this.renderDoor(1, 'goat', true)}
-                {this.renderDoor(2, 'goat', false)}
+                {doors}
             </div>
         );
     }
@@ -139,6 +137,20 @@ class MontyHallProblem extends React.Component {
         super(props);
         this.state = {
             currentRun: 0,
+            doors: [
+                {
+                    'arrow': false,
+                    'car' : false
+                },
+                {
+                    'arrow': false,
+                    'car' : false
+                },
+                {
+                    'arrow': false,
+                    'car' : false
+                }
+            ],
             rounds : [
                 {
                     'runLength': 100,
@@ -174,13 +186,14 @@ class MontyHallProblem extends React.Component {
                     </p>
                 </div>
 
-                <Doors />
+                <Doors
+                    doors={this.state.doors}
+                />
 
                 <Controls />
 
                 <Results
                     rounds={this.state.rounds}
-                    winners={this.state.winners}
                 />
 
             </div>
