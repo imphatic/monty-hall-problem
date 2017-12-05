@@ -40,6 +40,28 @@ class Doors extends React.Component {
 }
 
 class Controls extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          'runs': 100,
+          'speed' : 50
+        };
+    }
+
+    executeRun()
+    {
+        this.props.run(this.state.runs, this.state.speed);
+    }
+
+    handleChange(e) {
+        let change = {};
+        let newValue = Number(e.target.value);
+        let oldValue = this.state[e.target.name];
+
+        change[e.target.name] = !isNaN(newValue) ? newValue : oldValue;
+        this.setState(change)
+    }
+
     render() {
         return (
             <div className="controls">
@@ -48,15 +70,17 @@ class Controls extends React.Component {
                 <div className="controlsWrap">
                     <div className="controlWrap">
                         <div>Runs</div>
-                        <div><input type="input" name="runs" value="100" /></div>
+                        <div><input type="input" name="runs" value={this.state.runs}
+                                    onChange={this.handleChange.bind(this)}  /></div>
                     </div>
                     <div className="controlWrap">
                         <div>Speed</div>
-                        <div><input type="input" name="speed" value="50" /> %</div>
+                        <div><input type="input" name="speed" value={this.state.speed}
+                                    onChange={this.handleChange.bind(this)} /> %</div>
                     </div>
                     <div className="controlWrap">
                         <div />
-                        <div><input type="button" name="run" value="Run!" /></div>
+                        <div><input type="button" name="run" value="Run!" onClick={() => this.executeRun()} /></div>
                     </div>
                 </div>
             </div>
@@ -168,6 +192,11 @@ class MontyHallProblem extends React.Component {
         };
     }
 
+    run(runs, speed)
+    {
+        //todo: finish out this section next
+    }
+
     render() {
         return (
             <div className="montyHallProblem">
@@ -190,7 +219,9 @@ class MontyHallProblem extends React.Component {
                     doors={this.state.doors}
                 />
 
-                <Controls />
+                <Controls
+                    run={(runs, speed) => this.run(runs, speed)}
+                />
 
                 <Results
                     rounds={this.state.rounds}
