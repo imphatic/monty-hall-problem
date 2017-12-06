@@ -192,9 +192,39 @@ class MontyHallProblem extends React.Component {
         };
     }
 
-    run(runs, speed)
+    async run(runs, speed)
     {
-        //todo: finish out this section next
+        console.log('run!');
+        for (let i = 0; i < runs; i++) {
+
+            // Rest
+            this.state.doors[0].car = false;
+            this.state.doors[1].car = false;
+            this.state.doors[2].car = false;
+            this.state.doors[0].arrow = false;
+            this.state.doors[1].arrow = false;
+            this.state.doors[2].arrow = false;
+
+            // Randomly assign one door with a car
+            let c = getRandomInt(0, 2);
+            console.log(c);
+            this.state.doors[c].car = true;
+            await speedGovernor(speed);
+
+            // Randomly choose door, moving arrow into position
+            let a = getRandomInt(0, 2);
+            this.state.doors[a].arrow = true;
+            await speedGovernor(speed);
+
+            // Randomly remove a goat, if it is not chosen
+
+            await speedGovernor(speed);
+
+            // Switch door for switch run
+
+            await speedGovernor(speed);
+            // Record win or lose.
+        }
     }
 
     render() {
@@ -233,8 +263,19 @@ class MontyHallProblem extends React.Component {
     }
 }
 
-
 ReactDOM.render(
     <MontyHallProblem />,
     document.getElementById('root')
 );
+
+function speedGovernor(speed)
+{
+    var ms = 1000 * (speed/100);
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
