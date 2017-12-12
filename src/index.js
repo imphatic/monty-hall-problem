@@ -4,7 +4,7 @@ import './index.css';
 
 function Door(props) {
     return (
-        <div className="doorWrap">
+        <div className={ props.data.inactive ? 'doorWrap fade' : 'doorWrap'}>
             <div className="arrowWrap">
                 { props.data.arrow ? <div className="arrow" /> : null }
             </div>
@@ -164,15 +164,18 @@ class MontyHallProblem extends React.Component {
             doors: [
                 {
                     'arrow': false,
-                    'car' : false
+                    'car' : false,
+                    'inactive' : false
                 },
                 {
                     'arrow': false,
-                    'car' : false
+                    'car' : false,
+                    'inactive' : false
                 },
                 {
                     'arrow': false,
-                    'car' : false
+                    'car' : false,
+                    'inactive' : false
                 }
             ],
             rounds : [
@@ -194,38 +197,84 @@ class MontyHallProblem extends React.Component {
 
     async run(runs, speed)
     {
-        console.log('run!');
         for (let i = 0; i < runs; i++) {
-
-            // Rest
-            this.state.doors[0].car = false;
-            this.state.doors[1].car = false;
-            this.state.doors[2].car = false;
-            this.state.doors[0].arrow = false;
-            this.state.doors[1].arrow = false;
-            this.state.doors[2].arrow = false;
+            // Reset
+            this.setState({
+                doors : [
+                    {
+                        'arrow': false,
+                        'car' : false,
+                        'inactive' : false
+                    },
+                    {
+                        'arrow': false,
+                        'car' : false,
+                        'inactive' : false
+                    },
+                    {
+                        'arrow': false,
+                        'car' : false,
+                        'inactive' : false
+                    }
+                ]
+            });
+            let doors = this.state.doors;
 
             // Randomly assign one door with a car
-            let c = getRandomInt(0, 2);
-            console.log(c);
-            this.state.doors[c].car = true;
+            let doorWithCar = getRandomInt(0, 3);
+            doors[doorWithCar].car = true;
+            this.setState({doors});
             await speedGovernor(speed);
 
             // Randomly choose door, moving arrow into position
-            let a = getRandomInt(0, 2);
-            this.state.doors[a].arrow = true;
+            let doorChosen = getRandomInt(0, 3);
+            doors[doorChosen].arrow = true;
+            this.setState({doors});
             await speedGovernor(speed);
 
-            // Randomly remove a goat, if it is not chosen
-
+            // Randomly remove a goat
+            let goats = this.goatSet(doors, doorChosen)
+            let goatChoice = getRandomInt(0, goats.length);
+            let goatDoorRemoved = goats[goatChoice];
+            doors[goatDoorRemoved].inactive = true;
+            this.setState({doors});
             await speedGovernor(speed);
 
             // Switch door for switch run
+            if(true) {
+                let firstDoorChosen = doorChosen;
+                doors[firstDoorChosen].arrow = false;
 
-            await speedGovernor(speed);
+                for (let i = 0; i < 3; i++) {
+                    if(doors[i].inactive) continue;
+                    if(firstDoorChosen === i) continue;
+                    doors[i].arrow = true;
+                    doorChosen = i;
+                }
+                this.setState({doors});
+                await speedGovernor(speed);
+            }
+
             // Record win or lose.
+
         }
     }
+
+    // Returns an array of doors that have goats behind them, unless that door was selected
+    goatSet(doors, doorChosen)
+    {
+        let goatDoors = [];
+        for (let i = 0; i < 3; i++) {
+            if(i === doorChosen) continue;
+            if(!doors[i].car) {
+                goatDoors.push(i);
+            }
+        }
+
+        return goatDoors;
+    }
+
+
 
     render() {
         return (

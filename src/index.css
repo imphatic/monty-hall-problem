@@ -43,6 +43,9 @@ ul {
     flex-grow:1;
     text-align:center;
 }
+.fade {
+    opacity:.15;
+}
 .doorShape {
     background:#787878;
     width:50%;
