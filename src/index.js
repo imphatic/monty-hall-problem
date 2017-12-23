@@ -91,27 +91,28 @@ class Controls extends React.Component {
 class Round extends React.Component {
     render() {
         const data = this.props.data;
-        const switchWin = data.switchWinPercent;
-        const noSwitchWin = data.noSwitchWinPercent;
-        const switchPadRight = (switchWin)/2;
-        const switchPadLeft = (100 - switchWin)/2;
-        const noSwitchPadRight = (noSwitchWin)/2;
-        const noSwitchPadLeft = (100 - noSwitchWin)/2;
+        const switchWinPercent = data.switchWins/data.runLength;
+        const noSwitchWinPercent = data.noSwitchWins/data.runLength;
+
+        const switchPadRight = (switchWinPercent)/2;
+        const switchPadLeft = (100 - switchWinPercent)/2;
+        const noSwitchPadRight = (noSwitchWinPercent)/2;
+        const noSwitchPadLeft = (100 - noSwitchWinPercent)/2;
 
         return (
             <li className="round">
                 <div className="switch" style={{paddingLeft:switchPadLeft+'%', paddingRight:switchPadRight+'%'}}>
                     <div className={ data.winner === 1 ? 'winner' : null }>
-                        <div className="wins">{switchWin}%</div>
+                        <div className="wins">{switchWinPercent}%</div>
                         switch
-                        <div className="loses">{100 - switchWin}%</div>
+                        <div className="loses">{100 - switchWinPercent}%</div>
                     </div>
                 </div>
                 <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
                     <div className={ data.winner === 2 ? 'winner' : null }>
-                        <div className="wins">{noSwitchWin}%</div>
+                        <div className="wins">{noSwitchWinPercent}%</div>
                         no switch
-                        <div className="loses">{100 - noSwitchWin}%</div>
+                        <div className="loses">{100 - noSwitchWinPercent}%</div>
                     </div>
                 </div>
             </li>
@@ -160,7 +161,7 @@ class MontyHallProblem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentRun: 0,
+            currentRound: 0,
             doors: [
                 {
                     'arrow': false,
@@ -179,85 +180,115 @@ class MontyHallProblem extends React.Component {
                 }
             ],
             rounds : [
+                /*
                 {
                     'runLength': 100,
-                    'switchWinPercent': 45,
-                    'noSwitchWinPercent':35,
+                    'switchWins': 45,
+                    'noSwitchWins':35,
                     'winner': 0
                 },
-                {
-                    'runLength': 100,
-                    'switchWinPercent': 35,
-                    'noSwitchWinPercent':45,
-                    'winner': 0
-                }
+                */
             ]
         };
     }
 
     async run(runs, speed)
     {
-        for (let i = 0; i < runs; i++) {
-            // Reset
-            this.setState({
-                doors : [
-                    {
-                        'arrow': false,
-                        'car' : false,
-                        'inactive' : false
-                    },
-                    {
-                        'arrow': false,
-                        'car' : false,
-                        'inactive' : false
-                    },
-                    {
-                        'arrow': false,
-                        'car' : false,
-                        'inactive' : false
-                    }
-                ]
-            });
-            let doors = this.state.doors;
+        // Start a new round
+        let rounds = this.state.rounds;
+        rounds.push({
+            'runLength': runs,
+            'switchWins': 0,
+            'noSwitchWins':0,
+            'winner': 0
+        });
+        this.setState({rounds});
 
-            // Randomly assign one door with a car
-            let doorWithCar = getRandomInt(0, 3);
-            doors[doorWithCar].car = true;
-            this.setState({doors});
-            await speedGovernor(speed);
+        let withSwitch = 1;
+        for (let h = 0; h < 2; h++) {
 
-            // Randomly choose door, moving arrow into position
-            let doorChosen = getRandomInt(0, 3);
-            doors[doorChosen].arrow = true;
-            this.setState({doors});
-            await speedGovernor(speed);
+            for (let i = 0; i < runs; i++) {
+                // Reset
+                this.setState({
+                    doors: [
+                        {
+                            'arrow': false,
+                            'car': false,
+                            'inactive': false
+                        },
+                        {
+                            'arrow': false,
+                            'car': false,
+                            'inactive': false
+                        },
+                        {
+                            'arrow': false,
+                            'car': false,
+                            'inactive': false
+                        }
+                    ]
+                });
+                let doors = this.state.doors;
 
-            // Randomly remove a goat
-            let goats = this.goatSet(doors, doorChosen)
-            let goatChoice = getRandomInt(0, goats.length);
-            let goatDoorRemoved = goats[goatChoice];
-            doors[goatDoorRemoved].inactive = true;
-            this.setState({doors});
-            await speedGovernor(speed);
-
-            // Switch door for switch run
-            if(true) {
-                let firstDoorChosen = doorChosen;
-                doors[firstDoorChosen].arrow = false;
-
-                for (let i = 0; i < 3; i++) {
-                    if(doors[i].inactive) continue;
-                    if(firstDoorChosen === i) continue;
-                    doors[i].arrow = true;
-                    doorChosen = i;
-                }
+                // Randomly assign one door with a car
+                let doorWithCar = getRandomInt(0, 3);
+                doors[doorWithCar].car = true;
                 this.setState({doors});
                 await speedGovernor(speed);
+
+                // Randomly choose door, moving arrow into position
+                let doorChosen = getRandomInt(0, 3);
+                doors[doorChosen].arrow = true;
+                this.setState({doors});
+                await speedGovernor(speed);
+
+                // Randomly remove a goat
+                let goats = this.goatSet(doors, doorChosen)
+                let goatChoice = getRandomInt(0, goats.length);
+                let goatDoorRemoved = goats[goatChoice];
+                doors[goatDoorRemoved].inactive = true;
+                this.setState({doors});
+                await speedGovernor(speed);
+
+                // Switch door for switch run
+                if (withSwitch) {
+                    let firstDoorChosen = doorChosen;
+                    doors[firstDoorChosen].arrow = false;
+
+                    for (let i = 0; i < 3; i++) {
+                        if (doors[i].inactive) continue;
+                        if (firstDoorChosen === i) continue;
+                        doors[i].arrow = true;
+                        doorChosen = i;
+                    }
+                    this.setState({doors});
+                    await speedGovernor(speed);
+                }
+
+                // Record wins.
+                this.setState((prevState, props) => {
+                    let rounds = prevState.rounds;
+                    let currentRound = prevState.currentRound;
+                    let round = rounds[currentRound];
+                    let roundType = (withSwitch) ? 'switchWins' : 'noSwitchWins';
+
+                    for (let i = 0; i < 3; i++) {
+                        if(doors[i].arrow && doors[i].car) {
+                            round[roundType]++;
+                        }
+                    }
+
+                    return {'rounds' : rounds}
+                });
             }
 
-            // Record win or lose.
-
+            withSwitch = 0;
         }
+
+        //update the round number
+        this.setState((prevState, props) => {
+           return {'currentRound':prevState.currentRound + 1}
+        });
     }
 
     // Returns an array of doors that have goats behind them, unless that door was selected
