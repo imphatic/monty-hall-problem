@@ -152,6 +152,10 @@ ul {
     border:solid #000000;
     position:relative;
 }
+
+.label {
+    overflow:hidden;
+}
 .wins {
     position:relative;
     float:left;

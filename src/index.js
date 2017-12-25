@@ -91,27 +91,27 @@ class Controls extends React.Component {
 class Round extends React.Component {
     render() {
         const data = this.props.data;
-        const switchWinPercent = data.switchWins/data.runLength;
-        const noSwitchWinPercent = data.noSwitchWins/data.runLength;
-
-        const switchPadRight = (switchWinPercent)/2;
-        const switchPadLeft = (100 - switchWinPercent)/2;
-        const noSwitchPadRight = (noSwitchWinPercent)/2;
-        const noSwitchPadLeft = (100 - noSwitchWinPercent)/2;
+        const switchWinPercent = (data.switchWins/data.runLength) * 100;
+        const noSwitchWinPercent = (data.noSwitchWins/data.runLength) * 100;
+        const incrementSize = (data.runLength/100)/2;
+        const switchPadLeft = 50 - (data.switchWins * incrementSize);
+        const switchPadRight = 50 - (data.switchLoses * incrementSize);
+        const noSwitchPadLeft = 50 - (data.noSwitchWins * incrementSize);
+        const noSwitchPadRight = 50 - (data.noSwitchLoses * incrementSize);
 
         return (
             <li className="round">
                 <div className="switch" style={{paddingLeft:switchPadLeft+'%', paddingRight:switchPadRight+'%'}}>
                     <div className={ data.winner === 1 ? 'winner' : null }>
                         <div className="wins">{switchWinPercent}%</div>
-                        switch
+                        <div className="label">switch</div>
                         <div className="loses">{100 - switchWinPercent}%</div>
                     </div>
                 </div>
                 <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
                     <div className={ data.winner === 2 ? 'winner' : null }>
                         <div className="wins">{noSwitchWinPercent}%</div>
-                        no switch
+                        <div className="label">no switch</div>
                         <div className="loses">{100 - noSwitchWinPercent}%</div>
                     </div>
                 </div>
@@ -179,16 +179,7 @@ class MontyHallProblem extends React.Component {
                     'inactive' : false
                 }
             ],
-            rounds : [
-                /*
-                {
-                    'runLength': 100,
-                    'switchWins': 45,
-                    'noSwitchWins':35,
-                    'winner': 0
-                },
-                */
-            ]
+            rounds : []
         };
     }
 
@@ -199,7 +190,9 @@ class MontyHallProblem extends React.Component {
         rounds.push({
             'runLength': runs,
             'switchWins': 0,
-            'noSwitchWins':0,
+            'switchLoses' : 0,
+            'noSwitchWins': 0,
+            'noSwitchLoses' : 0,
             'winner': 0
         });
         this.setState({rounds});
@@ -268,14 +261,20 @@ class MontyHallProblem extends React.Component {
                 // Record wins.
                 this.setState((prevState, props) => {
                     let rounds = prevState.rounds;
-                    let currentRound = prevState.currentRound;
-                    let round = rounds[currentRound];
-                    let roundType = (withSwitch) ? 'switchWins' : 'noSwitchWins';
+                    let round = rounds[prevState.currentRound];
+                    let roundType = (withSwitch) ? 'switch' : 'noSwitch';
+                    let win = 0;
 
                     for (let i = 0; i < 3; i++) {
                         if(doors[i].arrow && doors[i].car) {
-                            round[roundType]++;
+                            win = 1;
                         }
+                    }
+
+                    if(win) {
+                        round[roundType + 'Wins']++;
+                    } else {
+                        round[roundType + 'Loses']++;
                     }
 
                     return {'rounds' : rounds}
@@ -304,8 +303,6 @@ class MontyHallProblem extends React.Component {
 
         return goatDoors;
     }
-
-
 
     render() {
         return (
