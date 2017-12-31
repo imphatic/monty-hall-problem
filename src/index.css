@@ -151,10 +151,12 @@ ul {
     line-height:110%;
     border:solid #000000;
     position:relative;
+    height: 12px;
 }
 
 .label {
     overflow:hidden;
+    display:inline-block;
 }
 .wins {
     position:relative;

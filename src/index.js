@@ -91,8 +91,10 @@ class Controls extends React.Component {
 class Round extends React.Component {
     render() {
         const data = this.props.data;
-        const switchWinPercent = (data.switchWins/data.runLength) * 100;
-        const noSwitchWinPercent = (data.noSwitchWins/data.runLength) * 100;
+        const switchWinPercent = Math.floor((data.switchWins/data.runLength) * 100);
+        const switchLossPercent = Math.floor((data.switchLoses/data.runLength) * 100);
+        const noSwitchWinPercent = Math.floor((data.noSwitchWins/data.runLength) * 100);
+        const noSwitchLossPercent = Math.floor((data.noSwitchLoses/data.runLength) * 100);
         const incrementSize = (data.runLength/100)/2;
         const switchPadLeft = 50 - (data.switchWins * incrementSize);
         const switchPadRight = 50 - (data.switchLoses * incrementSize);
@@ -105,14 +107,14 @@ class Round extends React.Component {
                     <div className={ data.winner === 1 ? 'winner' : null }>
                         <div className="wins">{switchWinPercent}%</div>
                         <div className="label">switch</div>
-                        <div className="loses">{100 - switchWinPercent}%</div>
+                        <div className="loses">{switchLossPercent}%</div>
                     </div>
                 </div>
                 <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
                     <div className={ data.winner === 2 ? 'winner' : null }>
                         <div className="wins">{noSwitchWinPercent}%</div>
                         <div className="label">no switch</div>
-                        <div className="loses">{100 - noSwitchWinPercent}%</div>
+                        <div className="loses">{noSwitchLossPercent}%</div>
                     </div>
                 </div>
             </li>
@@ -312,7 +314,7 @@ class MontyHallProblem extends React.Component {
                     <p>
                     "Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car;
                     behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors,
-                    opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?"
+                    opens another door, say No. 3, which has a goat. He then says to you, 'Do you want to pick door No. 2?'
                     Is it to your advantage to switch your choice?"<br />
                     <span className="grey">From the "Ask Marilyn" column in Parade magazine in 1990</span>
                     </p>
@@ -347,7 +349,7 @@ ReactDOM.render(
 
 function speedGovernor(speed)
 {
-    var ms = 1000 * (speed/100);
+    var ms =  1000 + (1000 * (speed/-100));
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
