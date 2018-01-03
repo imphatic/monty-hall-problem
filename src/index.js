@@ -95,11 +95,10 @@ class Round extends React.Component {
         const switchLossPercent = Math.floor((data.switchLoses/data.runLength) * 100);
         const noSwitchWinPercent = Math.floor((data.noSwitchWins/data.runLength) * 100);
         const noSwitchLossPercent = Math.floor((data.noSwitchLoses/data.runLength) * 100);
-        const incrementSize = (data.runLength/100)/2;
-        const switchPadLeft = 50 - (data.switchWins * incrementSize);
-        const switchPadRight = 50 - (data.switchLoses * incrementSize);
-        const noSwitchPadLeft = 50 - (data.noSwitchWins * incrementSize);
-        const noSwitchPadRight = 50 - (data.noSwitchLoses * incrementSize);
+        const switchPadLeft = 50 - switchWinPercent/2;
+        const switchPadRight = 50 - switchLossPercent/2;
+        const noSwitchPadLeft = 50 - noSwitchWinPercent/2;
+        const noSwitchPadRight = 50 - noSwitchLossPercent/2;
 
         return (
             <li className="round">
@@ -113,7 +112,7 @@ class Round extends React.Component {
                 <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
                     <div className={ data.winner === 2 ? 'winner' : null }>
                         <div className="wins">{noSwitchWinPercent}%</div>
-                        <div className="label">no switch</div>
+                        <div className="label">no-switch</div>
                         <div className="loses">{noSwitchLossPercent}%</div>
                     </div>
                 </div>
@@ -204,26 +203,26 @@ class MontyHallProblem extends React.Component {
 
             for (let i = 0; i < runs; i++) {
                 // Reset
+                let doors = [
+                    {
+                        'arrow': false,
+                        'car': false,
+                        'inactive': false
+                    },
+                    {
+                        'arrow': false,
+                        'car': false,
+                        'inactive': false
+                    },
+                    {
+                        'arrow': false,
+                        'car': false,
+                        'inactive': false
+                    }
+                ];
                 this.setState({
-                    doors: [
-                        {
-                            'arrow': false,
-                            'car': false,
-                            'inactive': false
-                        },
-                        {
-                            'arrow': false,
-                            'car': false,
-                            'inactive': false
-                        },
-                        {
-                            'arrow': false,
-                            'car': false,
-                            'inactive': false
-                        }
-                    ]
+                    doors: doors
                 });
-                let doors = this.state.doors;
 
                 // Randomly assign one door with a car
                 let doorWithCar = getRandomInt(0, 3);

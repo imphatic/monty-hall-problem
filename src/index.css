@@ -156,17 +156,18 @@ ul {
 
 .label {
     overflow:hidden;
-    display:inline-block;
 }
 .wins {
-    position:relative;
+    position:absolute;
     float:left;
     left:-30px;
+    top:0;
 }
 .loses {
-    position:relative;
+    position:absolute;
     float:right;
     right:-30px;
+    top:0;
 }
 span.switch {
     color:#ff9c00;
