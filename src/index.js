@@ -40,28 +40,6 @@ class Doors extends React.Component {
 }
 
 class Controls extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          'runs': 100,
-          'speed' : 50
-        };
-    }
-
-    executeRun()
-    {
-        this.props.run(this.state.runs, this.state.speed);
-    }
-
-    handleChange(e) {
-        let change = {};
-        let newValue = Number(e.target.value);
-        let oldValue = this.state[e.target.name];
-
-        change[e.target.name] = !isNaN(newValue) ? newValue : oldValue;
-        this.setState(change)
-    }
-
     render() {
         return (
             <div className="controls">
@@ -70,17 +48,24 @@ class Controls extends React.Component {
                 <div className="controlsWrap">
                     <div className="controlWrap">
                         <div>Runs</div>
-                        <div><input type="input" name="runs" value={this.state.runs}
-                                    onChange={this.handleChange.bind(this)}  /></div>
+                        <div><input type="input"
+                                    name="runs"
+                                    value={this.props.runs}
+                                    onChange={this.props.handleControlsChange.bind(this)}  /></div>
                     </div>
                     <div className="controlWrap">
                         <div>Speed</div>
-                        <div><input type="input" name="speed" value={this.state.speed}
-                                    onChange={this.handleChange.bind(this)} /> %</div>
+                        <div><input type="input"
+                                    name="speed"
+                                    value={this.props.speed}
+                                    onChange={this.props.handleControlsChange.bind(this)} /> %</div>
                     </div>
                     <div className="controlWrap">
                         <div />
-                        <div><input type="button" name="run" value="Run!" onClick={() => this.executeRun()} /></div>
+                        <div><input type="button"
+                                    name="run"
+                                    value="Run!"
+                                    onClick={() => this.props.run()} /></div>
                     </div>
                 </div>
             </div>
@@ -162,6 +147,9 @@ class MontyHallProblem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            executeRun: this.run,
+            speed:100,
+            runs:90,
             currentRound: 0,
             doors: [
                 {
@@ -184,8 +172,22 @@ class MontyHallProblem extends React.Component {
         };
     }
 
-    async run(runs, speed)
+    handleControlsChange(e) {
+        console.log(e, e.target);
+        console.log(e.target.name);
+        console.log(this.state);
+        let change = {};
+        let newValue = Number(e.target.value);
+        let oldValue = this.state[e.target.name];
+
+        change[e.target.name] = !isNaN(newValue) ? newValue : oldValue;
+        this.setState(change)
+    }
+
+    async run()
     {
+        let runs = this.state.runs;
+
         // Start a new round
         let rounds = this.state.rounds;
         rounds.push({
@@ -228,13 +230,13 @@ class MontyHallProblem extends React.Component {
                 let doorWithCar = getRandomInt(0, 3);
                 doors[doorWithCar].car = true;
                 this.setState({doors});
-                await speedGovernor(speed);
+                await speedGovernor(this.state.speed);
 
                 // Randomly choose door, moving arrow into position
                 let doorChosen = getRandomInt(0, 3);
                 doors[doorChosen].arrow = true;
                 this.setState({doors});
-                await speedGovernor(speed);
+                await speedGovernor(this.state.speed);
 
                 // Randomly remove a goat
                 let goats = this.goatSet(doors, doorChosen)
@@ -242,7 +244,7 @@ class MontyHallProblem extends React.Component {
                 let goatDoorRemoved = goats[goatChoice];
                 doors[goatDoorRemoved].inactive = true;
                 this.setState({doors});
-                await speedGovernor(speed);
+                await speedGovernor(this.state.speed);
 
                 // Switch door for switch run
                 if (withSwitch) {
@@ -256,7 +258,7 @@ class MontyHallProblem extends React.Component {
                         doorChosen = i;
                     }
                     this.setState({doors});
-                    await speedGovernor(speed);
+                    await speedGovernor(this.state.speed);
                 }
 
                 // Record wins.
@@ -328,7 +330,10 @@ class MontyHallProblem extends React.Component {
                 />
 
                 <Controls
-                    run={(runs, speed) => this.run(runs, speed)}
+                    run={() => this.run()}
+                    handleControlsChange={(e) => this.handleControlsChange(e)}
+                    runs={this.state.runs}
+                    speed={this.state.speed}
                 />
 
                 <Results
