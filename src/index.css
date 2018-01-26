@@ -7,10 +7,14 @@ body {
 }
 
 h2 {
-    color:#787878;
+    background-color:#787878;
     font-weight:normal;
     font-size:18px;
-    margin:0;
+    margin:-5px auto 12px auto;
+    padding:4px 10px;
+    border-radius:0 0 5px 5px;
+    display:inline-block;
+    color:#000000;
 }
 
 hr {
@@ -27,17 +31,17 @@ ul {
     color:#787878;
 }
 .green {
-    color:#00ff06;
+    color:#006B00;
 }
 .red {
-    color:#ef0000;
+    color:#860000;
 }
 
 
 .doors {
     margin:50px 20% 0 20%;
     display: flex;
-    justify-content:center
+    justify-content:center;
 }
 .doorWrap {
     flex-grow:1;
@@ -51,7 +55,7 @@ ul {
     width:50%;
     margin:0 auto;
     color:#000000;
-    font-size:100px;
+    border-radius:10px;
     min-height:150px;
 }
 .arrowWrap {
@@ -63,17 +67,29 @@ ul {
     height: 0;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-top: 24px solid #00fff0;
+    border-top: 24px solid #1A9696;
 }
 .doorShape span {
     display:block;
-    padding-top:60px;
+    padding-top:30px;
+    font-size:100px;
+    line-height:80%;
 }
 .car {
-    color:#00ff06;
+    background-color:#006B00;
+    display:inline-block;
+    margin:6px auto 0 auto;
+    padding:0 8px;
+    border-radius:5px;
+    color:#787878;
 }
 .goat {
-    color:#ef0000;
+    background-color:#860000;
+    display:inline-block;
+    margin:6px auto 0 auto;
+    padding:0 8px;
+    border-radius:5px;
+    color:#787878;
 }
 
 
@@ -106,13 +122,19 @@ ul {
 }
 .titleWins {
     float:left;
-    color:#00ff06;
+    background-color:#22C822;
     font-size: 18px;
+    margin:6px auto 0 auto;
+    padding:0 8px;
+    border-radius:5px;
 }
 .titleLoses {
     float:right;
-    color:#ef0000;
+    background-color:#FA2B2B;
     font-size: 18px;
+    margin:6px auto 0 auto;
+    padding:0 8px;
+    border-radius:5px;
 }
 .resultsWrap {
     position:relative;
@@ -170,14 +192,18 @@ ul {
     top:0;
 }
 span.switch {
-    color:#ff9c00;
+    color:#FF943C;
 }
 div.switch > div.winner {
-    background:#ff9c00;
+    background:#FF943C;
 }
 span.noSwitch {
-    color:#0693ff;
+    color:#2FC8C8;
 }
 div.noSwitch > div.winner {
-    background:#0693ff;
+    background:#2FC8C8;
+}
+
+.hide {
+    display:none;
 }

@@ -10,10 +10,11 @@ function Door(props) {
             </div>
             <div className="doorShape">
                 <span>{props.index + 1}</span>
+                <div className={(props.data.car) ? 'car' : 'goat'}>
+                    {(props.data.car) ? 'car' : 'goat'}
+                </div>
             </div>
-            <div className={(props.data.car) ? 'car' : 'goat'}>
-                {(props.data.car) ? 'car' : 'goat'}
-            </div>
+
         </div>
     );
 }
@@ -90,14 +91,14 @@ class Round extends React.Component {
                 <div className="switch" style={{paddingLeft:switchPadLeft+'%', paddingRight:switchPadRight+'%'}}>
                     <div className={ data.winner === 1 ? 'winner' : null }>
                         <div className="wins">{switchWinPercent}%</div>
-                        <div className="label">switch</div>
+                        <div className={ switchPadLeft + switchPadRight < 90 ? 'label' : ' label hide' }>switch</div>
                         <div className="loses">{switchLossPercent}%</div>
                     </div>
                 </div>
                 <div className="noSwitch" style={{paddingLeft:noSwitchPadLeft+'%', paddingRight:noSwitchPadRight+'%'}}>
                     <div className={ data.winner === 2 ? 'winner' : null }>
                         <div className="wins">{noSwitchWinPercent}%</div>
-                        <div className="label">no-switch</div>
+                        <div className={ noSwitchPadLeft + noSwitchPadRight < 90 ? 'label' : ' label hide' }>no-switch</div>
                         <div className="loses">{noSwitchLossPercent}%</div>
                     </div>
                 </div>
@@ -148,8 +149,8 @@ class MontyHallProblem extends React.Component {
         super(props);
         this.state = {
             executeRun: this.run,
-            speed:100,
-            runs:90,
+            speed:80,
+            runs:100,
             currentRound: 0,
             doors: [
                 {
