@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 function Door(props) {
     return (
@@ -54,12 +56,9 @@ class Controls extends React.Component {
                                     value={this.props.runs}
                                     onChange={this.props.handleControlsChange.bind(this)}  /></div>
                     </div>
-                    <div className="controlWrap">
+                    <div className="controlWrap speed">
                         <div>Speed</div>
-                        <div><input type="input"
-                                    name="speed"
-                                    value={this.props.speed}
-                                    onChange={this.props.handleControlsChange.bind(this)} /> %</div>
+                        <Slider value={this.props.speed} onChange={this.props.handleSliderChange.bind(this)} />
                     </div>
                     <div className="controlWrap">
                         <div />
@@ -68,7 +67,9 @@ class Controls extends React.Component {
                                     value="Run!"
                                     onClick={() => this.props.run()} /></div>
                     </div>
+
                 </div>
+
             </div>
         );
     }
@@ -163,27 +164,27 @@ class MontyHallProblem extends React.Component {
         super(props);
         this.state = {
             executeRun: this.run,
-            speed:80,
-            runs:100,
+            speed: 80,
+            runs: 100,
             currentRound: 0,
             doors: [
                 {
                     'arrow': false,
-                    'car' : false,
-                    'inactive' : false
+                    'car': false,
+                    'inactive': false
                 },
                 {
                     'arrow': false,
-                    'car' : false,
-                    'inactive' : false
+                    'car': false,
+                    'inactive': false
                 },
                 {
                     'arrow': false,
-                    'car' : false,
-                    'inactive' : false
+                    'car': false,
+                    'inactive': false
                 }
             ],
-            rounds : []
+            rounds: []
         };
     }
 
@@ -194,6 +195,13 @@ class MontyHallProblem extends React.Component {
 
         change[e.target.name] = !isNaN(newValue) ? newValue : oldValue;
         this.setState(change)
+    }
+
+    handleSliderChange(e)
+    {
+        let change = {};
+        change['speed'] = e;
+        this.setState(change);
     }
 
     async run()
@@ -344,6 +352,7 @@ class MontyHallProblem extends React.Component {
                 <Controls
                     run={() => this.run()}
                     handleControlsChange={(e) => this.handleControlsChange(e)}
+                    handleSliderChange={(e) => this.handleSliderChange(e)}
                     runs={this.state.runs}
                     speed={this.state.speed}
                 />

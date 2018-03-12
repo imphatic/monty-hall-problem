@@ -105,15 +105,20 @@ ul {
 .controlWrap {
     flex-grow:1;
     display:inline-block;
-    justify-content:center
+    justify-content:center;
+    padding:0 2%;
 }
-.controlWrap div:first-child {
+.controlWrap > div:first-child {
     height:20px;
 }
 
 .controlWrap input[type='input'] {
     text-align:center;
     width:50px;
+}
+
+.controls .speed {
+    width:50%;
 }
 
 
