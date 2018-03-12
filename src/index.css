@@ -81,7 +81,7 @@ ul {
     margin:6px auto 0 auto;
     padding:0 8px;
     border-radius:5px;
-    color:#787878;
+    color:#ffffff;
 }
 .goat {
     background-color:#860000;
@@ -89,7 +89,7 @@ ul {
     margin:6px auto 0 auto;
     padding:0 8px;
     border-radius:5px;
-    color:#787878;
+    color:#ffffff;
 }
 
 
@@ -138,11 +138,12 @@ ul {
 }
 .resultsWrap {
     position:relative;
+    width:80%;
+    margin:0 auto;
 }
 .leftAverageLine {
     height:100%;
     position:absolute;
-    right:55%;
     width:20%;
     padding-right:5px;
     border-right:1px solid #4b4b4b;
@@ -151,15 +152,13 @@ ul {
 .rightAverageLine {
     height:100%;
     position:absolute;
-    left:55%;
     width:20%;
     padding-left:5px;
     border-left:1px solid #4b4b4b;
+    text-align:left;
 }
-
 .rounds {
     min-width:400px;
-    width:50%;
     margin:0 auto;
     padding-top:40px;
     font-size:10px;
@@ -193,12 +192,14 @@ ul {
 }
 span.switch {
     color:#FF943C;
+    display:block;
 }
 div.switch > div.winner {
     background:#FF943C;
 }
 span.noSwitch {
     color:#2FC8C8;
+    display:block;
 }
 div.noSwitch > div.winner {
     background:#2FC8C8;
@@ -206,4 +207,6 @@ div.noSwitch > div.winner {
 
 .hide {
     display:none;
+}
+.show {
 }

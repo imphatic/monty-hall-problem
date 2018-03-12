@@ -118,6 +118,20 @@ class Results extends React.Component {
             );
         });
 
+        const totalRounds = Object.values(this.props.rounds).reduce(
+            (t, n) => t + n.runLength, 0);
+
+        const totalSwitchWins = Object.values(this.props.rounds).reduce(
+            (t, n) => t + n.switchWins, 0);
+
+        const totalNoSwitchWins = Object.values(this.props.rounds).reduce(
+            (t, n) => t + n.noSwitchWins, 0);
+
+        const avgWinWithSwitch = totalSwitchWins/(totalRounds) * 100;
+        const avgWinWithoutSwitch = totalNoSwitchWins/(totalRounds) * 100;
+
+        const showAvgLines = (this.props.rounds.length > 1) ? ' show' : 'hide';
+
         return (
             <div className="results">
                 <hr />
@@ -126,12 +140,12 @@ class Results extends React.Component {
                 <h2>Results</h2>
 
                 <div className="resultsWrap">
-                    <div className="leftAverageLine">
-                        win average with switch: <span className="switch">55%</span>
+                    <div className={showAvgLines + ' leftAverageLine'} style={{left:(30 - avgWinWithSwitch/2) +'%'}}>
+                        win average with switch: <span className="switch">{avgWinWithSwitch}%</span>
                     </div>
 
-                    <div className="rightAverageLine">
-                        win average without switch: <span className="noSwitch">45%</span>
+                    <div className={showAvgLines + ' rightAverageLine'} style={{left:(50 - avgWinWithoutSwitch/2)+'%'}}>
+                        win average without switch: <span className="noSwitch">{avgWinWithoutSwitch}%</span>
                     </div>
 
                     <ul className="rounds">
@@ -174,9 +188,6 @@ class MontyHallProblem extends React.Component {
     }
 
     handleControlsChange(e) {
-        console.log(e, e.target);
-        console.log(e.target.name);
-        console.log(this.state);
         let change = {};
         let newValue = Number(e.target.value);
         let oldValue = this.state[e.target.name];
