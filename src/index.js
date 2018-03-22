@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import AnimateHeight from 'react-animate-height';
 
 function Door(props) {
     return (
@@ -16,7 +17,6 @@ function Door(props) {
                     {(props.data.car) ? 'car' : 'goat'}
                 </div>
             </div>
-
         </div>
     );
 }
@@ -51,10 +51,12 @@ class Controls extends React.Component {
                 <div className="controlsWrap">
                     <div className="controlWrap">
                         <div>Runs</div>
-                        <div><input type="input"
+                        <div>
+                            <input type="input"
                                     name="runs"
                                     value={this.props.runs}
-                                    onChange={this.props.handleControlsChange.bind(this)}  /></div>
+                                    onChange={this.props.handleControlsChange.bind(this)}  />
+                        </div>
                     </div>
                     <div className="controlWrap speed">
                         <div>Speed</div>
@@ -62,14 +64,14 @@ class Controls extends React.Component {
                     </div>
                     <div className="controlWrap">
                         <div />
-                        <div><input type="button"
+                        <div>
+                            <input type="button"
                                     name="run"
                                     value="Run!"
-                                    onClick={() => this.props.run()} /></div>
+                                    onClick={() => this.props.run()} />
+                        </div>
                     </div>
-
                 </div>
-
             </div>
         );
     }
@@ -119,14 +121,9 @@ class Results extends React.Component {
             );
         });
 
-        const totalRounds = Object.values(this.props.rounds).reduce(
-            (t, n) => t + n.runLength, 0);
-
-        const totalSwitchWins = Object.values(this.props.rounds).reduce(
-            (t, n) => t + n.switchWins, 0);
-
-        const totalNoSwitchWins = Object.values(this.props.rounds).reduce(
-            (t, n) => t + n.noSwitchWins, 0);
+        const totalRounds = Object.values(this.props.rounds).reduce((t, n) => t + n.runLength, 0);
+        const totalSwitchWins = Object.values(this.props.rounds).reduce((t, n) => t + n.switchWins, 0);
+        const totalNoSwitchWins = Object.values(this.props.rounds).reduce((t, n) => t + n.noSwitchWins, 0);
 
         const avgWinWithSwitch = totalSwitchWins/(totalRounds) * 100;
         const avgWinWithoutSwitch = totalNoSwitchWins/(totalRounds) * 100;
@@ -163,6 +160,7 @@ class MontyHallProblem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            summaryHeight: null,
             executeRun: this.run,
             speed: 80,
             runs: 100,
@@ -186,6 +184,38 @@ class MontyHallProblem extends React.Component {
             ],
             rounds: []
         };
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+        const height = this.summaryElement.clientHeight;
+
+        this.setState({
+            summaryStartHeight:height
+        });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll(event) {
+        let scrollPos = window.scrollY;
+        let docHeight = document.documentElement.offsetHeight;
+
+        if(docHeight > window.innerHeight + this.summaryElement.clientHeight) {
+            if(scrollPos > 10 && this.summaryHeight !== 0)
+            {
+                this.setState({
+                    summaryHeight:0
+                });
+            } else if(scrollPos === 0) {
+                this.setState({
+                    summaryHeight:this.summaryStartHeight
+                });
+            }
+        }
     }
 
     handleControlsChange(e) {
@@ -199,9 +229,9 @@ class MontyHallProblem extends React.Component {
 
     handleSliderChange(e)
     {
-        let change = {};
-        change['speed'] = e;
-        this.setState(change);
+        this.setState({
+            speed:e
+        });
     }
 
     async run()
@@ -331,19 +361,27 @@ class MontyHallProblem extends React.Component {
         return (
             <div className="montyHallProblem">
                 <h1>The Monty Hall Problem</h1>
-                <div className="summary">
-                    <p>
-                    "Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car;
-                    behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors,
-                    opens another door, say No. 3, which has a goat. He then says to you, 'Do you want to pick door No. 2?'
-                    Is it to your advantage to switch your choice?"<br />
-                    <span className="grey">From the "Ask Marilyn" column in Parade magazine in 1990</span>
-                    </p>
-                    <p>
-                        The answer, perhaps suprisingly, is yes, your chance of winning is increased when you switch from your
-                        original choice.  Below you can simulate either switching doors or always sticking with the original choice.
-                    </p>
-                </div>
+                <AnimateHeight
+                    duration={ 500 }
+                    height={ this.state.summaryHeight }
+                >
+                    <div className="summary"
+                         ref={ (summaryElement) => this.summaryElement = summaryElement}>
+                        <p>
+                            The Monty Hall Problem first appeared in the "Ask Marilyn" column in Parade Magazine in 1990:
+                        </p>
+                        <p className="quote">
+                        "Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car;
+                        behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors,
+                        opens another door, say No. 3, which has a goat. He then says to you, 'Do you want to pick door No. 2?'
+                        Is it to your advantage to switch your choice?"<br />
+                        </p>
+                        <p>
+                            The answer, perhaps suprisingly, is yes, your chance of winning is increased when you switch from your
+                            original choice.  Below you can simulate either switching doors or always sticking with the original choice.
+                        </p>
+                    </div>
+                </AnimateHeight>
 
                 <Doors
                     doors={this.state.doors}

@@ -1,6 +1,6 @@
 body {
     font: 14px/20px "Helvetica", "Century Gothic", Futura, sans-serif;
-    margin: 20px;
+    margin: 60px 20px;
     text-align:center;
     color:#ffffff;
     background:#000000;
@@ -27,8 +27,9 @@ ul {
     list-style:none;
     padding:0;
 }
-.grey {
-    color:#787878;
+.quote {
+    padding:0 10%;
+    color:#bbbbbb;
 }
 .green {
     color:#006B00;
@@ -37,9 +38,16 @@ ul {
     color:#860000;
 }
 
+.summary {
+    overflow:hidden;
+    text-align:justify;
+    padding:0 15%;
+    font:1.15em/1.5em "Times", Serif;
+    font-weight:100;
+}
 
 .doors {
-    margin:50px 20% 0 20%;
+    margin:10px 20% 0 20%;
     display: flex;
     justify-content:center;
 }
