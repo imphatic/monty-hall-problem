@@ -11,6 +11,7 @@ export default class Layout extends React.Component {
         super(props);
         this.state = {
             summaryHeight: null,
+            footerSpacerHeight:null,
             executeRun: this.run,
             speed: 95,
             runs: 100,
@@ -52,19 +53,18 @@ export default class Layout extends React.Component {
 
     handleScroll(event) {
         let scrollPos = window.scrollY;
-        let docHeight = document.documentElement.offsetHeight;
 
-        if(docHeight > window.innerHeight + this.summaryElement.clientHeight) {
-            if(scrollPos > 10 && this.summaryHeight !== 0)
-            {
-                this.setState({
-                    summaryHeight:0
-                });
-            } else if(scrollPos === 0) {
-                this.setState({
-                    summaryHeight:this.summaryStartHeight
-                });
-            }
+        if(scrollPos > 30 && this.summaryHeight !== 0)
+        {
+            this.setState({
+                summaryHeight:0,
+                footerSpacerHeight:this.state.summaryStartHeight
+            });
+        } else if(scrollPos === 0) {
+            this.setState({
+                summaryHeight:this.state.summaryStartHeight,
+                footerSpacerHeight:0
+            });
         }
     }
 
@@ -84,8 +84,7 @@ export default class Layout extends React.Component {
         });
     }
 
-    async run()
-    {
+    async run() {
         let runs = this.state.runs;
 
         // Start a new round
@@ -248,7 +247,12 @@ export default class Layout extends React.Component {
                 <Results
                     rounds={this.state.rounds}
                 />
-
+                <AnimateHeight
+                    duration={ 500 }
+                    height={ this.state.footerSpacerHeight }
+                >
+                 <div className="footerSpacer">&nbsp;</div>
+                </AnimateHeight>
             </div>
 
         );
